@@ -16,7 +16,7 @@ session_start(); ?>
     <meta name="description" content="">
     <meta name="author" content="">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script> -->
     <script>tinymce.init({selector:'textarea'});</script>
 
     <title>Admin <?php echo "{$loginUser}"; ?></title>
@@ -24,6 +24,7 @@ session_start(); ?>
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <link href="css/loaderStyle.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
 

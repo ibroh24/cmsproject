@@ -32,7 +32,10 @@ $adminCount = mysqli_num_rows($adminResult);
 // for subscriber users
 $subQuery = "SELECT * FROM users WHERE role = 'subscriber'";
 $subResult = mysqli_query($dbConnect, $subQuery);
+
 $subCount = mysqli_num_rows($subResult);
+// $textSub = preg_replace($subCount, '<span style="color: red;">\1</span>', $subCount);
+
 
 
 
@@ -214,9 +217,12 @@ $subCount = mysqli_num_rows($subResult);
             <?php
                 $textElement = array('Posts','Comments', 'Users', 'Admin', 'Subscribers', 'Categories');
                 $counts = array($postCount,$commentCount, $userCount, $adminCount, $subCount, $catCount);
+                $colors = array("#028cd5", "#b6cd3f", "#fa6128", "#fdb93c", "#ab4785", "#fa6128");
 
                 for($i = 0; $i < 6; $i++){
                     echo "['{$textElement[$i]}'". ", ". "{$counts[$i]}],"; 
+                    // echo "['{$textElement[$i]}'". ", ". "'{$counts[$i]}'".", ". "{$colors[$i]}],"; 
+
                 }
 
             ?>
