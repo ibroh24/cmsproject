@@ -53,7 +53,7 @@ function selectedCategory($dbConnect)
 
                 ?>
                 <h2>
-                    <a href="../cmsproject/ostdetail.php?getPost=<?php echo $postid; ?>" > <?php echo $postTitle; ?></a>
+                    <a href="../cmsproject/postdetail.php?getPost=<?php echo $postid; ?>" > <?php echo $postTitle; ?></a>
                 </h2>
                 <p class="lead">
                     by <a href="../cmsproject/postdetail.php?getPost=<?php echo $postid; ?>"> <?php echo $postAuthor; ?></a>
@@ -63,7 +63,7 @@ function selectedCategory($dbConnect)
                 <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="desires" width="300" height="150">
                 <hr>
                 <p><?php echo $postContent; ?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="../cmsproject/postdetail.php?getPost=<?php echo $postid; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
                 <hr>
             <?php
             }
@@ -159,7 +159,7 @@ function postPull($dbConnect)
         <img class="img-responsive" src="images/<?php echo $postImage; ?>" alt="desires" width="300" height="150">
         <hr>
         <p><?php echo $postContent; ?></p>
-        <a class="btn btn-primary" href="selectedCategory.php?cats=<?php $catid; ?> ">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a class="btn btn-primary" href="../cmsproject/postdetail.php?getPost=<?php echo $postid; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
         <hr>
     <?php
     }
