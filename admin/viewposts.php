@@ -10,8 +10,8 @@ if (isset($_POST['submit'])) {
         </script>
     <?php } else {
 
-    addCategories($dbConnect, $catTitle);
-}
+        addCategories($dbConnect, $catTitle);
+    }
 }
 if (isset($_GET['delete'])) {
     $deleteCatID = $_GET['delete'];
@@ -24,17 +24,19 @@ if (isset($_GET['delete'])) {
     }
 }
 
-if(isset($_POST['edit'])){
+if (isset($_POST['edit'])) {
     $catTitle = $_POST['catTitle'];
     // $editCat = $_GET['update'];
-    if(!empty($catTitle)){
+    if (!empty($catTitle)) {
         $checkUpdate = updateCatgories($dbConnect, $catTitle, $catid);
-        if($checkUpdate){
+        if ($checkUpdate) {
             header("Location: categories.php");
         }
-    }else{
+    } else {
         ?>
-        <script>alert("No data to update!");</script>
+        <script>
+            alert("No data to update!");
+        </script>
     <?php }
 }
 
@@ -46,7 +48,7 @@ if(isset($_POST['edit'])){
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
         <li>
-            <a href="index.php"><i class="fa fa-dashboard" ></i > Dashboard</a>
+            <a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
         </li>
 
         <li class="active"><a href="javascript:;" data-toggle="collapse" data-target="#post"><i class="fa fa-fw fa-arrows-v"></i> Posts<i class="fa fa-fw fa-caret-down"></i></a>
@@ -102,8 +104,21 @@ if(isset($_POST['edit'])){
                         <i class="fa fa-clipboard"></i> All Posts
                     </li>
                 </ol>
-                
-                    <table class="table table-responsive">
+                <form method="post">
+                <div id="bulkOption" class="col-xs-4">
+                            <select class="form-control" name="" id="">
+                                <option value="">Select Options</option>
+                                <option value="">Publish</option>
+                                <option value="">Draft</option>
+                                <option value="">Delete</option>
+                            </select>
+
+
+                        </div>
+                        <br>
+                        
+                    <table class="table table-responsive table-hover">
+                        
                         <thead style="background-color:black; color:greenyellow;">
                             <tr>
                                 <th>Action</th>
@@ -123,17 +138,18 @@ if(isset($_POST['edit'])){
                             <?php selectAllPosts($dbConnect); ?>
                         </tbody>
                     </table>
-                </div>
-
-
-
-
+                </form>
             </div>
-        </div>
-        <!-- /.row -->
 
+
+
+
+        </div>
     </div>
-    <!-- /.container-fluid -->
+    <!-- /.row -->
+
+</div>
+<!-- /.container-fluid -->
 
 </div>
 <!-- /#page-wrapper -->

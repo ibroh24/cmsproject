@@ -71,7 +71,7 @@
                     <!-- select categories -->
                     <div class="form-group">
                         <label for="category">Post Category</label> <br>
-                        <select name="category">
+                        <select class="form-control col-xs-4" name="category">
                             <?php
                             global $dbConnect;
 

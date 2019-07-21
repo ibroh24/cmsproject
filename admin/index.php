@@ -24,6 +24,17 @@ $catResult = mysqli_query($dbConnect, $catQuery);
 $catCount = mysqli_num_rows($catResult);
 
 
+// for admin users
+$adminQuery = "SELECT * FROM users WHERE role = 'Admin'";
+$adminResult = mysqli_query($dbConnect, $adminQuery);
+$adminCount = mysqli_num_rows($adminResult);
+
+// for subscriber users
+$subQuery = "SELECT * FROM users WHERE role = 'subscriber'";
+$subResult = mysqli_query($dbConnect, $subQuery);
+$subCount = mysqli_num_rows($subResult);
+
+
 
 
 ?>
@@ -201,10 +212,10 @@ $catCount = mysqli_num_rows($catResult);
             ['Data', 'Count', ],
 
             <?php
-                $textElement = array('Posts','Comments', 'Users',  'Categories');
-                $counts = array($postCount,$commentCount, $userCount,  $catCount);
+                $textElement = array('Posts','Comments', 'Users', 'Admin', 'Subscribers', 'Categories');
+                $counts = array($postCount,$commentCount, $userCount, $adminCount, $subCount, $catCount);
 
-                for($i = 0; $i<4; $i++){
+                for($i = 0; $i < 6; $i++){
                     echo "['{$textElement[$i]}'". ", ". "{$counts[$i]}],"; 
                 }
 

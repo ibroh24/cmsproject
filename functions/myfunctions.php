@@ -34,6 +34,7 @@ function categories($dbConnect, $limit)
     }
 }
 
+// this function is used to get selected post through the postID and process it.
 function selectedCategory($dbConnect)
 {
     if(isset($_GET['cats'])){
@@ -86,7 +87,7 @@ function categoriesList($dbConnect)
             <td> <?php echo $numbers;  ?></td>
             <td><?php echo $catTitle; ?></td>
             <td>
-                <a href="categories.php?delete=<?php echo $catID; ?>" class="btn btn-sm btn-danger">Delete </a> <span class="text-success">|</span>
+                <a onclick="javascript: return confirm('Are you sure you want to delete <?php echo $catTitle; ?>?')"  href="categories.php?delete=<?php echo $catID; ?>" class="btn btn-sm btn-danger">Delete </a> <span class="text-success">|</span>
                 <a href="categories.php?update=<?php echo $catID; ?>" class="btn btn-sm btn-success">Update </a>
             </td>
         </tr>
@@ -266,7 +267,7 @@ function selectAllPosts($dbConnect)
             $poststatus = $row['poststatus'];
             ?>
             <tr>
-            <td><a href="viewposts.php?remove=<?php echo $postid; ?>" value="<?php deletePost($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
+            <td><a onclick="javascript: return confirm('Are you sure you want to delete post \'<?php echo $posttitle; ?>\'? ')" href="viewposts.php?remove=<?php echo $postid; ?>" value="<?php deletePost($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
              <a href="viewposts.php?edit=<?php echo $postid; ?>" class="fa fa-edit" title="update post" style="color: green;" data-toggle="modal" data-target="#updateModal" value="<?php editPost($dbConnect); ?>" ></a>
                 </td>
                 <td><?php echo $increament; ?></td>
@@ -458,7 +459,9 @@ function selectAllUsers($dbConnect)
                 $commentstatus = $row['commentstatus'];
                 ?>
                 <tr>
-                <td><center><a href="comments.php?erase=<?php echo $commentid; ?>" value="<?php deleteComment($dbConnect); ?>" class="fa fa-trash-o" title="delete comment" style="color: red;"></a></center></td>
+                <td><center>
+                    <a onclick="javascript: return confirm('Are you sure you want to delete <?php echo $commentAuthor; ?>\'s Comment?')" href="comments.php?erase=<?php echo $commentid; ?>" value="<?php deleteComment($dbConnect); ?>" class="fa fa-trash-o" title="delete comment" style="color: red;">
+                </a></center></td>
                     <td><?php echo $increament; ?></td>
                     <td><?php echo $commentstatus; ?></td>
                     <td><?php echo $commentAuthor; ?></td>
