@@ -1,6 +1,12 @@
-<?php
-?>
+<?php //session_start();
 
+if(!isset($_SESSION['username'])){
+    session_start();
+    
+}
+    // session_unset();
+    // header("Location: index.php");
+?>
 <?php
 
 // define('$dbconnect', 'connect'); 
@@ -223,6 +229,7 @@ function addUser($dbConnect)
                 console.log(result);
             </script>
             <?php
+            header("Location: ../admin/viewusers.php");
         }
         else {
             ?>
@@ -293,7 +300,7 @@ function selectAllPosts($dbConnect)
 
 
 // overloading function with table names, and 
-function generalTableSelections($dbConnect, $tableName, $columnName, $clause=''){
+function generalTableSelections($dbConnect, $tableName, $columnName = '', $clause=''){
     
     if(!$columnName){
         $query = "SELECT * FROM $tableName";
@@ -305,10 +312,80 @@ function generalTableSelections($dbConnect, $tableName, $columnName, $clause='')
     else {
         echo "good to go";
     }
-
-
-
 }
+
+
+function login($dbConnect){
+    /*  function to accept username and password
+        and log user in if it has register
+    */
+    
+    if(isset($_POST['login'])){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        if(!empty($username) && !empty($password)){
+            // $fields = $_POST;
+            // unset($fields['login']);
+            // $data = array_keys($fields);
+            // print_r($fields);
+            $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+            $result = mysqli_query($dbConnect, $query);
+            if(generalErrorCheck($dbConnect, $result));
+            else {
+                while ($rows = mysqli_fetch_array($result)) {
+                    $dbusername = $rows['username'];
+                    $dbpassword = $rows['password'];
+                    // $userid = $rows['userid'];
+                    $userrole = $rows['role'];
+                    $firstname = $rows['firstname'];
+                    $lastname = $rows['lastname'];
+                    $email = $rows['email'];
+                    if($username ==$dbusername && $password ==$dbpassword){
+                        // print_r($dbpassword);
+                        // print_r(header("Location: admin/index.php"));
+                        $count = mysqli_num_rows($result);
+                        if($count ==1)
+                        if($userrole == 'Admin' || $userrole=='admin'){
+                            $_SESSION['username'] = $dbusername;
+                            $_SESSION['password'] = $dbpassword;
+                            $_SESSION['userrole'] = $userrole;
+                            $_SESSION['firstname'] = $firstname;
+                            $_SESSION['lastname'] = $lastname;
+                            $_SESSION['email'] = $email;
+                            // print_r($_SESSION['username'] = $dbusername);
+                            // exit();
+                            // echo $dbusername."<br>"; echo $dbpassword; exit();
+                            ?><script>
+                                <?php echo("location.href = 'admin/index.php';");?>
+                            </script><?php
+                             
+                        }else {
+                            // echo $dbusername."<br>"; echo $dbpassword; exit();
+                            ?><script>
+                            <?php echo("location.href = 'index.php';");?>
+                        </script><?php
+                        }
+                    }else {
+                        // print_r($dbusername);
+                       echo "Login attempt failed!";
+                        // header("Location: ../index.php");
+                    }
+                }
+                
+            }
+
+        }else{
+            ?>
+            <script>
+                alert("Please fill the login textbox");
+            </script>
+        <?php }
+        
+    }
+}
+
+
+
 
 // select all users function
 function selectAllUsers($dbConnect)
@@ -332,7 +409,7 @@ function selectAllUsers($dbConnect)
             // $poststatus = $row['poststatus'];
             ?>
             <tr>
-            <td><a href="viewusers.php?remove=<?php echo $userid; ?>" value="<?php deletePost($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
+            <td><a href="viewusers.php?remove=<?php echo $userid; ?>" value="<?php deleteUser($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
              <a href="viewusers.php?edit=<?php echo $userid; ?>" class="fa fa-edit" title="update post" style="color: green;" data-toggle="modal" data-target="#updateModal" value="<?php editPost($dbConnect); ?>" ></a>
                 </td>
                 <td><?php echo $increament; ?></td>
@@ -468,6 +545,21 @@ function selectAllUsers($dbConnect)
         }
     }
 
+    function deleteUser($dbConnect)
+    {
+        if (isset($_GET['remove'])) {
+            $remove = $_GET['remove'];
+
+            $delQ = "DELETE FROM users WHERE userid = '$remove'";
+            $delResult = mysqli_query($dbConnect, $delQ);
+            if (generalErrorCheck($dbConnect, $delResult));
+            else {
+                header("Location: ../admin/viewusers.php");
+            }
+        }
+    }
+
+
     function deleteComment($dbConnect)
     {
         if (isset($_GET['erase'])) {
@@ -483,7 +575,7 @@ function selectAllUsers($dbConnect)
     }
 
     function editPost($dbConnect) {
-        
+        // echo "here"; exit();
         if (isset($_GET['edit'])) {
             $getId = $_GET['edit'];
             $getQuery = "SELECT * FROM posts WHERE postid = '$getId'";
@@ -514,7 +606,7 @@ function selectAllUsers($dbConnect)
                         </button>
                     </div>
 
-                    <form class="form" enctype="multipart/form-data" method="post">
+                    <form class="form" method="post">
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="modal-body">
@@ -530,8 +622,6 @@ function selectAllUsers($dbConnect)
                                     <input type="text" name="author" class="form-control" value="<?php echo $postAuthor; ?>">
                                     <label for="status">Post Status</label>
                                     <input type="text" name="status" class="form-control" value="<?php echo $poststatus; ?> ">
-                                    <label for="image">Post Image</label>
-                                    <input type="file" name="image" class="form-control">
                                     <label for="tags">Post Tags</label>
                                     <input type="text" name="tags" class="form-control" value="<?php echo $posttags; ?> ">
                                     <label for="content">Post Content</label>
@@ -540,7 +630,7 @@ function selectAllUsers($dbConnect)
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button name="delete" id="delete" class="btn btn-sucess">Update Post</button>
+                            <button name="postUpdate" id="update" class="btn btn-sucess">Update Post</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                         </div>
 
@@ -625,5 +715,5 @@ function checKOut($dbConnect){
         
 
 
-
+ob_end_flush();
 ?>

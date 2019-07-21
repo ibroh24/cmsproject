@@ -73,7 +73,7 @@ if(isset($_POST['edit'])){
             </ul>
         </li>
         <li>
-            <a href="#"><i class="fa fa-fw fa-wrench"></i> Profile</a>
+            <a href="profile.php"><i class="fa fa-fw fa-wrench"></i> Profile</a>
         </li>
         <li class="active">
             <a href="comments.php"><i class="fa fa-comment"></i> Comments</a>

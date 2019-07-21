@@ -1,5 +1,27 @@
+<?php 
+// if(!isset($_SESSION['username']))
+//session_start(); ?>
 <?php include "includes/adminheader.php"; ?>
 <?php require_once "../functions/myfunctions.php"; ?>
+<?php 
+// print_r($_SESSION); exit();
+    $loginUser = $_SESSION['username'];
+
+    $query = "SELECT * FROM users WHERE username = '$loginUser'";
+    $result = mysqli_query($dbConnect, $query);
+    if(generalErrorCheck($dbConnect, $result));
+    else {
+        while($row = mysqli_fetch_assoc($result)){
+            $username = $row['username'];
+            $firstname = $row['firstname'];
+            $lastname = $row['lastname'];
+            $email = $row['email'];
+            $role = $row['role'];
+            $password = $row['password'];
+        }
+    }
+?>
+
 
 <!-- Top Menu Items -->
 
@@ -23,7 +45,7 @@
         <li>
             <a href="categories.php"><i class="fa fa-fw fa-wrench"></i> Categories</a>
         </li>
-        <li class="active"><a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+        <li><a href="javascript:;" data-toggle="collapse" data-target="#users"><i class="fa fa-fw fa-user"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="users" class="collapse">
                 <li>
                     <a href="viewusers.php"><i class="fa fa-fw fa-users"></i> All Users</a>
@@ -33,7 +55,7 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <li class="active">
             <a href="profile.php"><i class="fa fa-fw fa-wrench"></i> Profile</a>
         </li>
         <li>
@@ -52,15 +74,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Add New User
+                <?php echo $loginUser; ?>'s Profile
                     <!-- <small>Subheading</small> -->
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-clipboard"></i> <a href="addusers.php">Add User</a>
+                        <i class="fa fa-clipboard"></i> <a href="addusers.php">User Profile</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-clipboard"></i> New Users
+                        <i class="fa fa-clipboard"></i> Profile for <?php echo $loginUser; ?>
                     </li>
                 </ol>
                 <!-- user form -->
@@ -69,13 +91,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user">First Name</label>
-                                <input type="text" name="firstname" class="form-control" id="">
+                                <input type="text" name="firstname" class="form-control" value="<?php echo $firstname; ?>">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="author">Last Name</label>
-                                <input type="text" name="lastname" class="form-control" id="" required="required">
+                                <input type="text" name="lastname" class="form-control" value="<?php echo $lastname; ?>" required="required">
                             </div>
                         </div>
 
@@ -84,49 +106,20 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user">Username</label>
-                                <input type="text" name="username" class="form-control" id="">
+                                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="author">Password</label>
-                                <input type="password" name="password" class="form-control" id="" required="required">
+                                <input type="text" name="password" class="form-control" value="<?php echo $username; ?>" required="required">
                             </div>
                         </div>
-
-                        <!-- select categories -->
-                        <div class="form-group col-md-6">
-                            <label for="category">User Type</label> <br>
-                            <select name="role">
-                                <option>Select User Type</option>
-                                <option>Admin</option>
-                                <option>Subscriber</option>
-                            </select>
-                            <?php
-                            // global $dbConnect;
-
-                            // $query = "SELECT role FROM users";
-
-                            // $cats = mysqli_query($dbConnect, $query);
-                            // if(generalErrorCheck($dbConnect, $cats));
-                            // else{
-                            //     while ($rows = mysqli_fetch_assoc($cats)) {
-                            //         $id = $rows['userid'];
-                            //         $title = $rows['role'];
-                            //         echo "<option value='$title'>{$title}</option>";                                    
-                            //     }
-                            // }
-                            ?>
-                            <!-- </select> -->
-                            <!-- <input type="text" name="category" class="form-control" id=""> -->
-                            <!-- </div> -->
-                            
-                                    <!-- </div> -->
                                 </div>
                                 <div class="col-md-6">
                             <div class="form-group">
                                 <label for="author">Email</label>
-                                <input type="email" name="email" class="form-control" id="" required="required">
+                                <input type="email" name="email" class="form-control" value="<?php echo $email; ?>" required="required">
                             </div>
                         </div>
                         </div>

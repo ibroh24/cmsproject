@@ -1,3 +1,7 @@
+<?php 
+// if(!isset($_SESSION['username']))
+session_start(); ?>
+<?php $loginUser = $_SESSION['username'];  //echo $loginUser; exit();?>
 <?php ob_start(); ?>
 <?php include "../includes/dbhandler.php"; ?>
 
@@ -11,8 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <title>admin page</title>
+    <title>Admin <?php echo "{$loginUser}"; ?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -51,15 +56,15 @@
             <li><a href="../index.php">Blog Home</a></li>
            
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo "{$loginUser}"; ?><b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        <a href="../admin/profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
                     </li>
 
                     <li class="divider"></li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        <a href="../index.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                     </li>
                 </ul>
             </li>

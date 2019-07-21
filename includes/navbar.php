@@ -18,7 +18,7 @@
             <ul class="nav navbar-nav">
 
                 <?php categories($dbConnect, 10);  ?>
-                <li> <a href="admin">Admin</a> </li>
+                <!-- <li> <a href="admin">Admin</a> </li> -->
                 <!-- <li>
                         <a href="#">Services</a>
                     </li>
