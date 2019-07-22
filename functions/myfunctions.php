@@ -9,12 +9,17 @@ if(!isset($_SESSION['username'])){
 ?>
 <?php
 
-// define('$dbconnect', 'connect'); 
+// general function to check errors 
 function generalErrorCheck($dbConnect, $result)
 {
     if (!$result) {
         die("Query Failed!: " . mysqli_error($dbConnect));
     }
+}
+
+// general function for mysql injection
+function escapeString($dbConnect, $field){
+    return mysqli_real_escape_string($dbConnect, $field);
 }
 
 function categories($dbConnect, $limit)
@@ -171,15 +176,17 @@ function postPull($dbConnect)
 function addPost($dbConnect)
 {
     if (isset($_POST['post_create'])) {
-        $title = $_POST['title'];
-        $category = $_POST['category'];
-        $status = $_POST['status'];
-        $author = $_POST['author'];
-        $user = $_POST['user'];
+        // test escape function WORK!!
+        $title = escapeString($dbConnect, $_POST['title']);
+        // $title = $_POST['title'];
+        $category = escapeString($dbConnect,$_POST['category']);
+        $status = escapeString($dbConnect,$_POST['status']);
+        $author = escapeString($dbConnect,$_POST['author']);
+        $user = escapeString($dbConnect,$_POST['user']);
         $image = $_FILES['image']['name'];
         $imageTemp = $_FILES['image']['tmp'];
-        $tags = $_POST['tags'];
-        $content = $_POST['content'];
+        $tags = escapeString($dbConnect,$_POST['tags']);
+        $content = escapeString($dbConnect,$_POST['content']);
        // $date = date(d - m - y);
         $count = 4;
         // $viewcount
@@ -410,7 +417,7 @@ function selectAllUsers($dbConnect)
             // $poststatus = $row['poststatus'];
             ?>
             <tr>
-            <td><a href="viewusers.php?remove=<?php echo $userid; ?>" value="<?php deleteUser($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
+            <td><a onclick="javascript: return confirm('Are you sure you want to delete <?php echo $firstname. ' '. $lastname; ?>')" href="viewusers.php?remove=<?php echo $userid; ?>" value="<?php deleteUser($dbConnect); ?>" class="fa fa-trash-o" title="delete post" style="color: red;"></a>
              <a href="viewusers.php?edit=<?php echo $userid; ?>" class="fa fa-edit" title="update post" style="color: green;" data-toggle="modal" data-target="#updateModal" value="<?php editPost($dbConnect); ?>" ></a>
                 </td>
                 <td><?php echo $increament; ?></td>
@@ -708,7 +715,30 @@ function checKOut($dbConnect){
         </script>
         <?php
     }
+}
 
+// function to track online users
+function trackUsers($dbConnect){
+    $session = session_id();
+    $time = time();
+    $timeOfflineSeconds = 60;
+    $timeOffline = $time - $timeOfflineSeconds;
+
+    $query = "SELECT * FROM usertracker WHERE session = '$session'";
+    $res = mysqli_query($dbConnect, $query);
+    if(generalErrorCheck($dbConnect, $res));
+    else {
+        $count = mysqli_num_rows($res);
+        if($count==null)
+            mysqli_query($dbConnect, "INSERT INTO usertracker('session', 'time') VALUES('$session', '$time')");
+        else {
+            mysqli_query($dbConnect, "UPDATE usertracker SET time = '$time' WHERE session = '$session'");
+        }
+        $online = mysqli_query($dbConnect, "SELECT * FROM usertracker WHERE time > '$timeOffline')");
+        $counter = mysqli_num_rows($online);
+        return $counter;    
+    }
+    
 }
 
 

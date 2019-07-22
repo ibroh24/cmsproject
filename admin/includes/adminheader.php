@@ -2,7 +2,7 @@
 // if(!isset($_SESSION['username']))
 session_start(); ?>
 <?php $loginUser = $_SESSION['username'];  //echo $loginUser; exit();?>
-<?php ob_start(); ?>
+<?php require_once "../functions/myfunctions.php"; ?>
 <?php include "../includes/dbhandler.php"; ?>
 
 <!DOCTYPE html>
@@ -57,7 +57,7 @@ session_start(); ?>
 
         <ul class="nav navbar-right top-nav">
             <li><a href="../index.php">Blog Home</a></li>
-           
+            <li><a href="../index.php">Online Users </a> <?php //echo strackUsers($dbConnect); ?> </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo "{$loginUser}"; ?><b class="caret"></b></a>
                 <ul class="dropdown-menu">
